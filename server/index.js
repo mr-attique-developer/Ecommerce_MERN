@@ -2,6 +2,10 @@ import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import "dotenv/config"
+import bodyParser from "body-parser"
+import { connectDBConnection } from "./src/connectionDb/connect.js"
+import e from "express"
+
 
 
 const app = express()
@@ -12,12 +16,17 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 app.use(cookieParser())
-app.use(express.json())
+app.use(express.json({limit: "30mb"}))
+app.use(express.urlencoded({limit: "30mb"}))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
+
 
 app.get("/", (req, res) => {
-    res.send("Hello World")
+    res.send("Hello backend")
 })
 
+connectDBConnection()
 const port = process.env.PORT || 5000
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
