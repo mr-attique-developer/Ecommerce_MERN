@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { useLoginUserMutation } from '../redux/features/auth/authApi'
 import { setUser } from '../redux/features/auth/authSlice'
 import { useDispatch } from 'react-redux'
+import toast from "react-toastify"
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -25,6 +26,7 @@ const dispatch = useDispatch()
      console.log(response)
      const {token, user} = response
     dispatch(setUser({user}))
+    toast.success(response.message)
       navigate('/')
     } catch (error) {
       console.log(error)
