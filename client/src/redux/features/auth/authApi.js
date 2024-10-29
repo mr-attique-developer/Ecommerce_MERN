@@ -23,9 +23,46 @@ endpoints: (builder)=>({
             body : credentials
         })
     }),
+    logoutUser : builder.mutation({
+        query: ()=>({
+            url: "/logout",
+            method: "POST"
+        })
+    }),
+    getAllUsers : builder.query({
+        query: ()=>({
+            url: "/users",
+            method: "GET"
+        }),
+        refetchOnMount: true,
+        invalidatesTags: ["User"]
+    }),
+    deleteUser : builder.mutation({
+        query: (userId)=>({
+            url: `/users/${userId}`,
+            method: "DELETE"
+        }),
+        invalidatesTags: ["User"]
+    }),
+    updateUserRole : builder.mutation({
+        query: ({userId, role})=>({
+            url: `/updateUser/${userId}`,
+            method: "PUT",
+            body : {role}
+        }),
+        refetchOnMount : true,
+        invalidatesTags: ["User"]
+    }),
+    editProfile : builder.mutation({
+        query: (newProfile)=>({
+            url: "/editUserProfile",
+            method: "PATCH",
+            body : newProfile
+        })
+    }),
 })
 })
 
 
-export const {useRegisterUserMutation, useLoginUserMutation} = authApi
+export const {useRegisterUserMutation, useLoginUserMutation, useDeleteUserMutation, useEditProfileMutation, useGetAllUsersQuery, useLogoutUserMutation, useUpdateUserRoleMutation} = authApi
 export default authApi

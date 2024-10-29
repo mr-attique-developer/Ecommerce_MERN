@@ -10,7 +10,7 @@ router.route("/login").post(loginUserController)
 //     res.send("Hello")
 // })
 
-router.route("/logout").get(logoutController)
+router.route("/logout").post(logoutController)
 
 router.route("/users/:id").delete(deleteUserController)
 
