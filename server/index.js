@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser"
 import "dotenv/config"
 import bodyParser from "body-parser"
 import { connectDBConnection } from "./src/connectionDb/connect.js"
-import e from "express"
+import userRoutes from "./src/user/user.routes.js"
 
 
 
@@ -18,9 +18,11 @@ app.use(cors(corsOptions))
 app.use(cookieParser())
 app.use(express.json({limit: "30mb"}))
 app.use(express.urlencoded({limit: "30mb"}))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({extended: true}))
 
+
+app.use("/api/v1/user", userRoutes)
 
 app.get("/", (req, res) => {
     res.send("Hello backend")

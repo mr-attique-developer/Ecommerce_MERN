@@ -1,19 +1,35 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { useLoginUserMutation } from '../redux/features/auth/authApi'
+import { setUser } from '../redux/features/auth/authSlice'
+import { useDispatch } from 'react-redux'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleSubmit = (e) => {
+const dispatch = useDispatch()
+  const [loginUser,{isLoading} ] = useLoginUserMutation()
+  const navigate = useNavigate()
+  const handleSubmit = async(e) => {
     e.preventDefault()
     const data = {
       email,
       password
     }
     console.log(data)
+    try {
+     const response =await   loginUser(data).unwrap()
+     console.log(response)
+     const {token, user} = response
+    dispatch(setUser({user}))
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+      
+    }
   }
 
   const togglePasswordVisibility = () => {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { useRegisterUserMutation } from '../redux/features/auth/authApi'
 
 const Register = () => {
   const [email, setEmail] = useState('')
@@ -8,7 +9,10 @@ const Register = () => {
   const [username, setUsername] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleSubmit = (e) => {
+
+  const [registerUser, {isloading} ] = useRegisterUserMutation()
+  const navigate = useNavigate()
+   const handleSubmit =async (e) => {
     e.preventDefault()
     const data = {
       username,
@@ -16,6 +20,16 @@ const Register = () => {
       password
     }
     console.log(data)
+    try {
+      const response = await registerUser(data).unwrap()
+      console.log(response)
+      navigate('/login')
+
+    } catch (error) {
+      console.log(error)
+      
+    }
+
   }
 
   const togglePasswordVisibility = () => {
@@ -88,7 +102,7 @@ const Register = () => {
               </div>
             </div>
             <div>
-              <button type="submit" className="flex w-full justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">Sign in</button>
+              <button type="submit" className="flex w-full justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">Register</button>
             </div>
           </form>
           <p className='my-3 text-center'>
