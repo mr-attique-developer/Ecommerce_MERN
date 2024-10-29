@@ -8,6 +8,7 @@ baseQuery: fetchBaseQuery({
     baseUrl: `${getBaseURL()}/api/v1/user`,
     credentials: "include"
 }),
+tagTypes: ['Users'],
 endpoints: (builder)=>({
     registerUser : builder.mutation({
         query: (newUser)=>({

@@ -5,16 +5,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaBagShopping } from "react-icons/fa6";
 import { IoSearchOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from 'react-redux';
-// import Cart from '../pages/Cart';
 import avatar from "../assets/avatar.png"
 import { useLogoutUserMutation } from '../redux/features/auth/authApi';
-import toast from "react-toastify"
+import {toast} from "react-toastify"
+import { logoutUser } from '../redux/features/auth/authSlice';
 
 
 
 const Navbar = () => {
     const { products } = useSelector(state => state.cart)
-    console.log(products)
+    // console.log(products)
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
@@ -26,12 +26,17 @@ const Navbar = () => {
     // Logout User
     const [logout, {isloading}] = useLogoutUserMutation()
     const handleLogout =async()=>{
+      try {
         const response =  await  logout().unwrap()
-        console.log(response)
-        console.log(response.message)
-        localStorage.removeItem("user")
+        // console.log(response)
+        // console.log(response.message)
+       dispatch(logoutUser())
         toast.success(response.message)
         navigate("/login")
+      } catch (error) {
+        console.log("Error in logout User " , error)
+        toast.error(error.response.message)
+      }
     
     }
     const handleDropdownMenu = () => {
@@ -56,7 +61,7 @@ const Navbar = () => {
     ]
 
 const dropdownMenus = user?.role === "admin" ? adminDropdownMenu : userDropdownMenu
-console.log(dropdownMenus)
+// console.log(dropdownMenus)
     const handleToggle = () => {
         setIsCartOpen(!isCartOpen)
     }
@@ -109,7 +114,7 @@ console.log(dropdownMenus)
             <>
               <img
                 onClick={handleDropdownMenu}
-                src={avatar}
+                src={user?.profileImage || avatar}
                 alt="User Avatar"
                 className="h-6 w-6 rounded-full cursor-pointer"
               />

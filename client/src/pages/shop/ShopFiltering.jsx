@@ -2,7 +2,7 @@ import React from 'react';
 
 const ShopFiltering = ({ filter, filterData, setFilterData, clearFilter }) => {
   return (
-    <div className="flex flex-col p-4 bg-gray-100 rounded-lg shadow-md">
+    <div className="flex flex-col p-4 rounded-lg shadow-md">
       <div className="text-center text-xl sm:text-3xl font-light my-8">Filters</div>
 
       <div className="flex flex-wrap sm:flex-col justify-around p-4 gap-8">

@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { useRegisterUserMutation } from '../redux/features/auth/authApi'
+import {toast} from "react-toastify"
 
 const Register = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+
 
 
   const [registerUser, {isloading} ] = useRegisterUserMutation()
@@ -23,6 +25,7 @@ const Register = () => {
     try {
       const response = await registerUser(data).unwrap()
       console.log(response)
+      toast.success(response.messageS)
       navigate('/login')
 
     } catch (error) {

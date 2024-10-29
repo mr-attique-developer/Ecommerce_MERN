@@ -4,7 +4,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { useLoginUserMutation } from '../redux/features/auth/authApi'
 import { setUser } from '../redux/features/auth/authSlice'
 import { useDispatch } from 'react-redux'
-import toast from "react-toastify"
+import {toast} from "react-toastify"
 
 const Login = () => {
   const [email, setEmail] = useState('')
