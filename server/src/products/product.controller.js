@@ -78,3 +78,120 @@ export const getAllProductsController = async (req, res) => {
         });
     }
 };
+
+export const getSingleProductController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findById(id).populate("author", "email");
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found"
+            });
+        }
+        const reviews = await Review.find({ productId: id }).populate("userId", "email");
+        res.status(200).json({
+            success: true,
+            message: "Product fetched successfully",
+            product,
+            reviews
+        });
+
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Error in getSingleProduct controller",
+            error,
+        });
+        
+    }
+}
+
+
+export const updateProductController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updateProduct = await Product.findByIdAndUpdate(id, {...req.body}, { new: true });
+        if (!updateProduct) {
+            return res.status(400).json({
+                success: false,
+                message: "Product not found"
+            });
+        }
+        res.status(200).json({
+            success: true,
+            message: "Product updated successfully",
+            updateProduct
+    })
+}
+    catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Error in updateProduct controller",
+            error,
+        });
+    }
+}
+
+export const deleteProductController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteProduct = await Product.findByIdAndDelete(id);
+        if (!deleteProduct) {
+            return res.status(400).json({
+                success: false,
+                message: "Product not found"
+            });
+        }
+        await Review.deleteMany({ productId: id });
+        res.status(200).json({
+            success: true,
+            message: "Product deleted successfully",
+            deleteProduct
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Error in deleteProduct controller",
+            error,
+        });
+    }
+}
+
+export const relatedProductController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(400).json({
+                success: false,
+                message: "Product not found"
+            });
+        }
+        const regex = new RegExp(product.name.split(" ").filter((word)=> word.length > 1).join("|"), "i");
+        const relatedProducts = await Product.find( {
+            _id: { $ne: id },
+            $or: [
+                { name: regex },
+                { category: product.category },
+                
+            ]
+         })
+        res.status(200).json({
+            success: true,
+            message: "Related products fetched successfully",
+            relatedProducts
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Error in relatedProduct controller",
+            error,
+        });
+    }
+}
