@@ -1,4 +1,4 @@
-import Review from "../reviews/rewiew.model.js"
+import Review from "../reviews/review.model.js"
 import Product from "./product.model.js"
 
 

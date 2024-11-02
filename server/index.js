@@ -6,6 +6,7 @@ import bodyParser from "body-parser"
 import { connectDBConnection } from "./src/connectionDb/connect.js"
 import userRoutes from "./src/user/user.routes.js"
 import productRoutes from "./src/products/product.routes.js"
+import reviewRoutes from "./src/reviews/review.route.js"
 
 
 const app = express()
@@ -24,6 +25,7 @@ app.use(express.urlencoded({limit: "30mb"}))
 
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1/product", productRoutes)
+app.use("/api/v1/review", reviewRoutes)
 app.get("/", (req, res) => {
     res.send("Hello backend")
 })
