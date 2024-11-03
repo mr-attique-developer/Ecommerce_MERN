@@ -5,18 +5,18 @@ import insta6 from "../../../assets/instagram-6.jpg"
 import RatingStar from '../../../components/RatingStar';
 import { useGetSingleProductByIdQuery } from '../../../redux/features/products/productApi';
 import { addToCart } from '../../../redux/features/cart/cartSlice';
-import { useDispatch } from 'react-redux';
-import Modal from 'react-modal'; // Import Modal from react-modal
+import { useDispatch, useSelector } from 'react-redux';
+import Review from '../reviews/Review';
+import UserDetailReview from '../reviews/UserDetailReview';
 
-// Set the app element for accessibility
-Modal.setAppElement('#root');
 
 const SingleProduct = () => {
     const { id } = useParams()
     const dispatch = useDispatch()
     const { data, error, isLoading } = useGetSingleProductByIdQuery(id)
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [review, setReview] = useState('');
+    const {user} = useSelector(state => state.auth)
+    console.log(user)
+
     console.log('Single Product Data:', data); // Debugging log
     const singleProduct = data?.product
     const reviews = data?.reviews
@@ -27,21 +27,6 @@ const SingleProduct = () => {
         dispatch(addToCart(product))
     }
 
-    const handleOpenModal = () => {
-        setModalIsOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setModalIsOpen(false);
-    };
-
-    const handleSubmitReview = () => {
-        // Handle review submission logic here
-        console.log('Review submitted:', review);
-        setReview("")
-        setModalIsOpen(false);
-
-    };
 
     if (isLoading) return <h1>Loading...</h1>
     if (error) return <h1>{error.message}</h1>
@@ -85,38 +70,13 @@ const SingleProduct = () => {
                             className='bg-red-500 text-white px-4 py-2 rounded-md'>Add to Cart</button>
                     </div>
                 </div>
-                </div>
-              <div className='mx-4  '>
-          <button
-            onClick={handleOpenModal}
-            className='bg-blue-500 text-white px-8 py-2 rounded-md'>Add Review</button>
-            <div>{review}</div>
-
-          <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={handleCloseModal}
-            contentLabel="Add Review"
-            className="modal absolute top-52 left-52  bg-white p-8 rounded-lg shadow-lg"
-            overlayClassName="overlay fixed inset-0 bg-black bg-opacity-50"
-          >
-            <h2>Add Review</h2>
-            <input
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
-              className="w-full p-2 border rounded-md"
-              rows="4"
-            />
-            <div className='mt-4 flex justify-end gap-2'>
-              <button
-                onClick={handleCloseModal}
-                className='bg-gray-500 text-white px-4 py-2 rounded-md'>Cancel</button>
-              <button
-                onClick={handleSubmitReview}
-                className='bg-green-500 text-white px-4 py-2 rounded-md'>Submit</button>
             </div>
-          </Modal>
-        </div>
-          
+            {/* logged in user details */}
+       <UserDetailReview productReview= { reviews} />
+            <Review  productReview= { reviews} />
+
+
+
         </>
     )
 }
