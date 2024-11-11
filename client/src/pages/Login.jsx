@@ -30,6 +30,7 @@ const dispatch = useDispatch()
       navigate('/')
     } catch (error) {
       console.log(error)
+      toast.error(error.data.message)
       
     }
   }

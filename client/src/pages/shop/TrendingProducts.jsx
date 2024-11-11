@@ -1,12 +1,20 @@
 import React, { useState } from 'react'
 import ProductCards from './ProductCards'
-import products from "../../data/products.json"
+import { useGetAllProductsQuery } from '../../redux/features/products/productApi'
+// import products from "../../data/products.json"
 
 const TrendingProducts = () => {
     const  [loadProducts, setLoadProducts] = useState(8)
     const loadMore = () => {
         setLoadProducts((prevCount)=> prevCount + 4)
     }
+    const { data, error, isLoading } = useGetAllProductsQuery({
+        
+      })
+      const { products = [] } = data || {}
+      
+  if (isLoading) return <h1>Loading...</h1>
+  if (error) return <h1>{error.message}</h1>
   return (
   <>
     <div className='mt-16 flex flex-col justify-center items-center '>

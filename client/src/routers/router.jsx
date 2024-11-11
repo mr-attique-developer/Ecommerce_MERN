@@ -10,33 +10,27 @@ import Login from '../pages/Login'
 import Register from '../pages/Register'
 import Cart from '../pages/cart/Cart'
 import Contact from "../pages/Contact"
+import ProtectedRoutes from '../components/ProtectedRoutes'
+import Success from '../pages/checkout_payment/Success'
+import Cancel from '../pages/checkout_payment/Cancel'
 
-{/* <Navbar />
-<Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="/shop" element={<ShopPage />} />
-  <Route path="/contact" element={<Contact />} />
-  <Route path="/cart" element={<Cart/>} /> 
-  <Route path="/search" element={<Search/>} /> 
-  <Route path="/categories/:categoryName" element={<CategoryPage/>} />
-  <Route path="/shop/:id" element={<SingleProduct/>} />
 
-</Routes>
-<Footer/> */}
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
-        children:[
-            { path:"/", element:<Home /> },
-            { path:"/shop" , element:<ShopPage/> },
-            { path:"/shop/:id" , element:<SingleProduct/> },
-            { path:"/categories/:categoryName" , element:<CategoryPage/> },
-            { path:"/search" , element:<Search/> },
-            { path:"/cart" , element:<Cart/> },
-            {path: "/contact", element: <Contact />},
-        ]
+        children:  [
+            { path: "/", element: <ProtectedRoutes element={<Home />} /> },
+            { path: "/shop", element: <ProtectedRoutes element={<ShopPage />} /> },
+            { path: "/shop/:id", element: <ProtectedRoutes element={<SingleProduct />} /> },
+            { path: "/categories/:categoryName", element: <ProtectedRoutes element={<CategoryPage />} /> },
+            { path: "/search", element: <ProtectedRoutes element={<Search />} /> },
+            { path: "/cart", element: <ProtectedRoutes element={<Cart />} /> },
+            { path: "/contact", element: <ProtectedRoutes element={<Contact />} /> },
+            { path: "/cancel", element: <ProtectedRoutes element={<Cancel />} /> },
+            { path: "/success", element: <ProtectedRoutes element={<Success />} /> },
+          ],
     },
     {
         path: "/login",

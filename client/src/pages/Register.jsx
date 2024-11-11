@@ -25,11 +25,12 @@ const Register = () => {
     try {
       const response = await registerUser(data).unwrap()
       console.log(response)
-      toast.success(response.messageS)
+      toast.success(response.message)
       navigate('/login')
 
     } catch (error) {
       console.log(error)
+      toast.error(error.data.message)
       
     }
 
