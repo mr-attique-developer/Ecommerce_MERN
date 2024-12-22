@@ -1,5 +1,7 @@
 import Review from "../reviews/review.model.js"
 import Product from "./product.model.js"
+import mongoose from 'mongoose';
+
 
 
 export const createProductController = async (req, res) => {
@@ -79,25 +81,28 @@ export const getAllProductsController = async (req, res) => {
     }
 };
 
+
+
 export const getSingleProductController = async (req, res) => {
     try {
         const { id } = req.params;
-        const product = await Product.findById(id).populate("author", "email");
-        if (!product) {
-            return res.status(404).json({
-                success: false,
-                message: "Product not found"
-            });
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid product ID" });
         }
-        const reviews = await Review.find({ productId: id }).populate("userId", "email");
-        res.status(200).json({
+
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        const reviews = await Review.find({ productId: id });
+
+        return res.status(200).json({
             success: true,
-            message: "Product fetched successfully",
             product,
             reviews
         });
-
-        
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -105,9 +110,8 @@ export const getSingleProductController = async (req, res) => {
             message: "Error in getSingleProduct controller",
             error,
         });
-        
     }
-}
+};
 
 
 export const updateProductController = async (req, res) => {

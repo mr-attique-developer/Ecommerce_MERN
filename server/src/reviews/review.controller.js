@@ -8,53 +8,21 @@ export const createReviewController = async (req, res) => {
 
         if (!comment || !rating || !userId || !productId) {
             return res.status(400).json({ message: "All fields are required" })
-
         }
+
         const existingReview = await Review.findOne({ userId, productId })
         if (existingReview) {
             existingReview.comment = comment
             existingReview.rating = rating
             await existingReview.save()
+            return res.status(200).json({ message: "Review updated successfully" })
         } else {
-
-
-            const newReview = new Review({
-                comment,
-                rating,
-                userId,
-                productId
-            })
-
+            const newReview = new Review({ comment, rating, userId, productId })
             await newReview.save()
-
-            res.status(201).json({ message: "Review created successfully" })
+            return res.status(201).json({ message: "Review created successfully" })
         }
-        const review = await Review.findOne({ productId })
-        if (review.length > 0) {
-            const totalRating = review.reduce((acc, item) => item.rating + acc, 0)
-            const averageRating = totalRating / review.length
-            const product = await Product.findById(productId)
-            if (product) {
-                product.rating = averageRating
-                await product.save({ validateBeforeSave: false })
-            }
-            else {
-                res.status(404).json({ message: "Product not found" })
-            }
-
-
-
-        }
-        res.status(201).send(
-            {
-                message: "Review created successfully",
-
-                reviews: review
-            },
-        )
-
     } catch (error) {
-        res.status(500).json({ message: "Something went wrong" })
+        return res.status(500).json({ message: "Server error", error: error.message })
     }
 }
 

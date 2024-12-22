@@ -13,7 +13,7 @@ const UserDetailReview = ({ productReview }) => {
               {
                 productReview.map((review, index) => (
                   <>
-                  <div key={index} className="p-4 border rounded-lg shadow-sm">
+                  <div key={review?._id} className="p-4 border rounded-lg shadow-sm">
                     <div className="flex items-center space-x-4 mb-2">
                       <img src={review?.userId?.profileImage || adminAvatar} alt="" className='w-8 h-8 rounded-full' />
                       <div>
