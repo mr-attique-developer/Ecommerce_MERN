@@ -1,3 +1,4 @@
 export const getBaseURL = ()=>{
-    return "http://localhost:1000"
+    // console.log(`${import.meta.env.VITE_BACKEND_URL}`)
+    return `${import.meta.env.VITE_BACKEND_URL}`
 }

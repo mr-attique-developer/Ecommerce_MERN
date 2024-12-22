@@ -17,7 +17,7 @@ const OrderSummary = () => {
     try {
       const stripe = await loadStripe('pk_test_51QJxNuId6qmZdeKrRo3P6uBmc3JkaSPxvuIKdDGEUDXaTFjB10GUMsXLgJ2yDprvmsKDDZHgFRq374yRcrDyhUaU00hyDsHMQv');
 
-      const response = await axios.post('http://localhost:1000/create-checkout-session', { products });
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/create-checkout-session`, { products });
       const session = response.data;
       const result = await stripe.redirectToCheckout({
         sessionId: session.id,

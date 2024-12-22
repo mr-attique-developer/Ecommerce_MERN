@@ -44,7 +44,7 @@ const Register = () => {
     <>
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight to-blue-500">Sign in to continue</h2>
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight to-blue-500">Sign Up to continue</h2>
         </div>
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm p-4 shadow-2xl rounded-lg">
           <form className="space-y-6" onSubmit={handleSubmit}>
